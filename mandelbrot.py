@@ -30,14 +30,13 @@ def get_complex_grid(top_left: complex, bottom_right: complex, step: float) -> n
     return final_grid
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
-     """
+    """
     :param c_arr: numpy array of complex values that represent points on a complex array
     :param max_iterations: maximum number of iterations
     :return: numpy array the same shape as c_arr with the greyscale values
     """
     # Set z to the numpy array with the same shape as c_arr, initialized to 0
     z = np.zeros(c_arr.shape, dtype= complex)
-
     # Create an array of ones to store escape times, initialized to max_iterations + 1
     escape_time = np.ones(c_arr.shape, dtype=int) * (max_iterations + 1)
     #track which haven't escaped
@@ -74,14 +73,17 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iterations: int ) -> n
         Returns:
         np.array: An array containing the escape iteration for each point in the grid.
     """
-    escape_time = np.zeros(grid.shape, dtype=int)
-    mask = np.full(grid.shape, True, dtype=bool)
-
+    #algorithm very similar to get_escape_time_color_arr
+    escape_time = np.ones(grid.shape, dtype=int) * (max_iterations + 1)
+    mask = np.ones(grid.shape, dtype=bool)
     z = grid.copy()
-    for i in range(max_iterations):
+
+    for i in range(1, max_iterations + 1):
         z[mask] = z[mask] ** 2 + c
         escaped = np.abs(z) > max(abs(c), 2)
-        escape_time[mask & escaped] = i + 1
-        mask = mask & np.logical_not(escaped)
+        escape_time[mask & escaped] = i
+        mask[escaped] = False
 
-    return escape_time
+        julia_color_arr = (max_iterations - escape_time + 1) / (max_iterations + 1)
+
+    return julia_color_arr
