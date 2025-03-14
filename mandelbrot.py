@@ -1,6 +1,14 @@
 import numpy as np
 
 def get_escape_time(c: complex, max_iterations: int) -> int | None:
+    """
+    Parameters:
+    c : The complex number
+    max_iterations: Maximum number of iterations before assuming non-escape.
+
+    Returns:
+    int or None: The number of iterations for escape, or None for never escaped.
+    """
     z = c
     for i in range(max_iterations+1):  # to include max_iterations
         if abs(z) > 2:  # After more than two, escape
@@ -10,6 +18,15 @@ def get_escape_time(c: complex, max_iterations: int) -> int | None:
     return None  # if it never escaped
 
 def get_complex_grid(top_left: complex, bottom_right: complex, step: float) -> np.ndarray:
+    """
+    Parameters:
+    top_left: Top-left coordinate of the grid.
+    bottom_right: Bottom-right coordinate of the grid.
+    step: Step size for the real and imaginary parts.
+
+    Returns:
+    np.ndarray: A array of complex numbers to represent the grid.
+    """
     real_start = top_left.real
     real_end = bottom_right.real   # Extract real and imaginary parts from the complex numbers
     imaginary_start = top_left.imag
