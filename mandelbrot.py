@@ -30,7 +30,32 @@ def get_complex_grid(top_left: complex, bottom_right: complex, step: float) -> n
     return final_grid
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
-    ...
+     '''
+
+    :param c_arr: numpy array of complex values that represent points on a complex array
+    :param max_iterations: maximum number of iterations
+    :return: numpy array the same shape as c_arr with the greyscale values
+    '''
+    #set z to the numpy array the same shape as c_arr
+    z = (np.ndarray(c_arr, dtype= float)*0)
+
+    #makes an array of ones to store escape times that will go to max_iterations +1
+    escape_time = np.ones(c_arr.shape, dtype= int) * (max_iterations + 1)
+
+    #create a loop that runs through each point to see when they escape
+    for i in range(1, max_iterations + 1):
+        #find points that haven't escaped
+        mask= np.abs(z) <=2
+        #use the mandelbrot iteration
+        z[mask]= z[mask]**2 + c_arr[mask]
+        #set the ones that escape to their escape time
+        escape_time[mask & (np.abs(z) > 2)] = i
+
+    #sets the color based off of when they escaped 
+    color_arr = (max_iterations - escape_time +1 ) / (max_iterations + 1)
+
+    #returns the color to make the picture 
+    return color_arr
 
 def get_julia_color_arr(grid: np.ndarray, c: complex, max_iterations: int ) -> np.ndarray:
     """
