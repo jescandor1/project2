@@ -84,6 +84,6 @@ def get_julia_color_arr(grid: np.ndarray, c: complex, max_iterations: int ) -> n
         escape_time[mask & escaped] = i
         mask[escaped] = False
 
-        julia_color_arr = (max_iterations - escape_time + 1) / (max_iterations + 1)
+    julia_color_arr = (max_iterations - escape_time + 1) / (max_iterations + 1)
 
     return julia_color_arr
